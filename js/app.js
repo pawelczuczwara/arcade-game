@@ -57,10 +57,13 @@ class Player{
     update(dt) {
         // What if win
         // console.log(this.y);
-        if (this.y <= 0) {
-            console.log ('win win');
-            modal.open();
-            // this.reset();
+        if (this.y <= 0 && modal.is_open === false) {
+            // setTimeout(() => {
+                console.log ('win win');
+                window.openModal();
+                //modal.open();
+                // this.reset();
+        // }, 0);
         }
     }
     render() {
@@ -103,7 +106,7 @@ class Enemies{
             this.all.push(new Enemy(this.set[this.nr]));
             this.nr += 1;
         }
-        console.log(this.all);
+        // console.log(this.all);
     }
 
     get() {
@@ -129,6 +132,7 @@ class Modal{
         this.overlay = overlay;
         const restartBt = overlay.querySelector('.restart');
         this.nextBt = overlay.querySelector('.next');
+        this.is_open = false;
 
         restartBt.addEventListener('click', e => {
             this._restart();
@@ -152,14 +156,20 @@ class Modal{
         player.reset();
     }
     open() {
+        console.log('open');
+        this.is_open = true;
         this.nextBt.focus();
         this.overlay.classList.remove('hidden');
     }
     close() {
+        console.log('close');
+        this.is_open = false;
         this.overlay.classList.add('hidden');
     }
 }
+
 const modal = new Modal(document.querySelector('.overlay'));
+window.openModal = modal.open.bind(modal);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
