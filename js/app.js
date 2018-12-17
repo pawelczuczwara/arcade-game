@@ -75,8 +75,6 @@ class Enemies{
     }
 }
 
-const enemies = new Enemies();
-let allEnemies = enemies.reset();
 
 // player class
 // requires an update(), render(), handleInput() methods.
@@ -107,12 +105,11 @@ class Player{
     }
 
     handleInput(key) {
-        // console.log(this.y);
         (key === 'left')  ? (this.x > 0 ? this.x -= this.stepX : this.x = this.maxX) : '';
         (key === 'right') ? (this.x < this.maxX ? this.x += this.stepX : this.x = 0) : '';
         (key === 'up') && (this.y > 0) ? this.y -= this.stepY : '';
         (key === 'down') && (this.y < this.maxY) ? this.y += this.stepY : '';
-        console.log(this.x, this.y);
+        // console.log(this.x, this.y);
     }
 
     reset() {
@@ -122,8 +119,6 @@ class Player{
 
 }
 
-const player = new Player();
-// console.log(player);
 
 // ----------------------- collect -----------------------
 class GameObject{
@@ -166,9 +161,6 @@ class GameObject{
     }
 
 }
-const gameObject = new GameObject();
-
-
 
 // Modal to show scores between levels
 class Modal{
@@ -223,8 +215,6 @@ class Modal{
     }
 }
 
-const modal = new Modal(document.querySelector('.overlay'));
-window.openModal = modal.open.bind(modal);
 
 // ----------------------- scores -----------------------
 class Counter{
@@ -243,20 +233,18 @@ class Counter{
         this.counter_cur += step;
         this.set();
         return this.counter_cur;
-    };
+    }
 
     reset() {
         this.counter_cur = 1;
         this.set();
         return this.counter_cur;
-    };
+    }
 
     set() {
         this.node.textContent = this.counter_cur;
-    };
+    }
 };
-const level = new Counter({node: document.querySelector('.info_level')});
-const scores = new Counter({step: 100, node: document.querySelector('.info_scores'), start: 0, pop_step: 25});
 
 // ----------------------- timer -----------------------
 class Timer{
@@ -310,9 +298,23 @@ class Timer{
         this.time_sec = 0;
         this._HTML();
     }
-
-
 }
+
+// ----------------------- objects definitions -----------------------
+const enemies = new Enemies();
+let allEnemies = enemies.reset();
+
+const player = new Player();
+// console.log(player);
+
+const gameObject = new GameObject();
+
+const modal = new Modal(document.querySelector('.overlay'));
+window.openModal = modal.open.bind(modal);
+
+const level = new Counter({node: document.querySelector('.info_level')});
+const scores = new Counter({step: 100, node: document.querySelector('.info_scores'), start: 0, pop_step: 25});
+
 const timer = new Timer({node: document.querySelector('.info_time')});
 
 // ----------------------- Main functionality -----------------------

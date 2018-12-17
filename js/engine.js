@@ -176,7 +176,6 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/wave.png',
-        'images/char-boy.png',
         'images/shark2.png',
         'images/char-pengiun.png'
     ]);
