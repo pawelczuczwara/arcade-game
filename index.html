@@ -9,13 +9,16 @@
 </head>
 <body>
     <header>
-        <p class='title'>surfer rescue</p>
+        <div class='title'>
+            <p>surfer rescue</p>
+            <button class='title_restart'>↺</button>
+        </div>
         <div class='info'>
             <div>
                 <span>Level: </span><span class='info_level'>1</span>
             </div>
             <div>
-                <span>Score: </span><span class='info_score'>100</span>
+                <span>Score: </span><span class='info_scores'>000</span>
             </div>
             <div>
                 <span class='info_time'>00:00</span>
@@ -26,13 +29,17 @@
         <div class='overlay hidden'>
             <div class='modal'>
                 <div>
-                    <h1 class='modal_txt'>Great job, completing level: </h1>
+                    <h1 class='modal_txt'>Great, level completed: </h1>
                     <span class='modal_level'>X</span>
                 </div>
                 <div>
-                        <h1 class='modal_txt'>Your time: </h1>
-                        <span class='modal_time'>XX:XX</span>
-                    </div>
+                    <h1 class='modal_txt'>Your time: </h1>
+                    <span class='modal_time'>XX:XX</span>
+                </div>
+                <div>
+                    <h1 class='modal_txt'>Your scores: </h1>
+                    <span class='modal_scores'>000</span>
+                </div>
                 <div>
                     <button class='restart'>Restart</button>
                     <button class='next'>Next level</button>

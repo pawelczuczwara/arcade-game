@@ -25,8 +25,18 @@ body {
 .title {
     width: 70%;
     background: var(--deep);
-    font-size: 3em;
+    font-size: 2em;
     margin: 0;
+
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    align-items: center;
+    /* grid-row: 20px; */
+}
+
+.title_restart {
+    /* height: 1em; */
+    font-size: 0.8em;
 }
 
 .info {
@@ -51,13 +61,13 @@ button {
     font-size: 1.5em;
     font-family: 'Roboto Slab', serif;
     cursor: pointer;
-
 }
 
 button:hover {
     background: var(--bt_hover);
 }
 button:focus {
+    outline: none;
     border: solid 2px var(--bt_focus);
     border-radius: 10px;
 }
@@ -77,14 +87,14 @@ button:focus {
 .modal {
     position: relative;
     width: 60%;
-    height: 60%;
+    height: 50%;
 
     /* styling - to style and position interior of the cards */
     background: var(--modal);
     border-radius: 10px;
 
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: repeat(4, auto);
     justify-self: center;
     justify-items: center;
     align-items: center;
@@ -92,8 +102,13 @@ button:focus {
 }
 
 .modal_level,
-.modal_time {
+.modal_time,
+.modal_scores {
     font-size: 3em;
+}
+
+.modal_txt {
+    margin: 0;
 }
 
 .hidden {

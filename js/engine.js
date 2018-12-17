@@ -96,6 +96,7 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
+        gameObject.update();
         player.update();
     }
 
@@ -155,7 +156,7 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-
+        gameObject.render();
         player.render();
     }
 
@@ -172,10 +173,9 @@ var Engine = (function(global) {
      * all of these images are properly loaded our game will start.
      */
     Resources.load([
-        'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',
-        'images/enemy-bug.png',
+        'images/wave.png',
         'images/char-boy.png',
         'images/shark2.png',
         'images/char-pengiun.png'
