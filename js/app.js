@@ -82,7 +82,7 @@ class Player{
     constructor() {
         this.sprite = 'images/char-pengiun.png';
         this.maxX   = 400;
-        this.maxY   = 400;
+        this.maxY   = 300;
         this.initX  = this.maxX / 2;
         this.initY  = this.maxY;
         this.stepX  = this.maxX / 10;
@@ -124,8 +124,7 @@ class Player{
 class GameObject{
     constructor({x = 0, y = 50} = {}) {
 
-        // The image/sprite for our enemies,
-        // this.sprite = 'images/enemy-bug.png';
+        // The image/sprite for objects - waves,
         this.sprite = 'images/wave.png';
         this.x      = x;
         this.y      = y;
@@ -142,7 +141,6 @@ class GameObject{
         this.x = this._set(450);
         this.y = this._set(300);
         // console.log(this.x, this.y);
-
     }
 
     update(dt) {
@@ -155,7 +153,7 @@ class GameObject{
         }
     }
 
-    // Draw the enemy on the screen, required method for game
+    // Draw the object on the screen, required method for game
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
@@ -182,11 +180,13 @@ class Modal{
         });
     }
 
+    // restart button method
     restart() {
         main.restart();
         this.close();
     }
 
+    // next level button methos
     _next() {
         main.next();
         this.close();
@@ -218,11 +218,11 @@ class Modal{
 
 // ----------------------- scores -----------------------
 class Counter{
-    constructor({node, step = 1, start = 1, pop_step = 10}) {
+    constructor({node, step = 1, start = 1}) {
         this.node        = node;
         this.step        = step;
-        this.pop_step    = pop_step;
         this.counter_cur = start;
+        this.counter_sta = start;
     }
 
     get() {
@@ -236,7 +236,7 @@ class Counter{
     }
 
     reset() {
-        this.counter_cur = 1;
+        this.counter_cur = this.counter_sta;
         this.set();
         return this.counter_cur;
     }
@@ -313,7 +313,7 @@ const modal = new Modal(document.querySelector('.overlay'));
 window.openModal = modal.open.bind(modal);
 
 const level = new Counter({node: document.querySelector('.info_level')});
-const scores = new Counter({step: 100, node: document.querySelector('.info_scores'), start: 0, pop_step: 25});
+const scores = new Counter({step: 100, node: document.querySelector('.info_scores'), start: 0,});
 
 const timer = new Timer({node: document.querySelector('.info_time')});
 
@@ -324,18 +324,18 @@ const main = {
     infoScores   : document.querySelector('.info_scores'),
 
     restart: function restart() {
-        level.reset();
+        level .reset();
         scores.reset();
-        this._nodeUpdate();
+        this  ._nodeUpdate();
 
         allEnemies = enemies.reset();
-        player.reset();
+        player    .reset();
         gameObject.add();
-        timer.reset();
+        timer     .reset();
     },
 
     _nodeUpdate: function _nodeUpdate() {
-        this.infoLevel.textContent = level.get();
+        this.infoLevel.textContent  = level.get();
         this.infoScores.textContent = scores.get();
     },
 
@@ -343,17 +343,17 @@ const main = {
         level.add();
         this._nodeUpdate();
 
-        enemies.add();
+        enemies.   add();
         gameObject.add();
-        player.reset();
-        timer.start();
+        player.    reset();
+        timer.     start();
     },
 
     openModal: function openModal() {
         timer.pause();
 
         scores.add();
-        this._nodeUpdate();
+        this  ._nodeUpdate();
 
         // modal.open();
         window.openModal();

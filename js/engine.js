@@ -111,15 +111,22 @@ var Engine = (function(global) {
          * for that particular row of the game level.
          */
         var rowImages = [
-                'images/grass-block.png',   // Top row is water
-                'images/water-block.png',   // Row 1 of 3 of stone
-                'images/water-block.png',   // Row 2 of 3 of stone
-                'images/water-block.png',   // Row 3 of 3 of stone
-                'images/water-block.png',   // Row 1 of 2 of grass
-                'images/water-block.png'    // Row 2 of 2 of grass
+                // 'images/grass-block.png',   // Top row is water
+                // 'images/water-block.png',   // Row 1 of 3 of stone
+                // 'images/water-block.png',   // Row 2 of 3 of stone
+                // 'images/water-block.png',   // Row 3 of 3 of stone
+                // 'images/water-block.png',   // Row 1 of 2 of grass
+                // 'images/water-block.png'    // Row 2 of 2 of grass
+                'images/row_1.jpg',
+                'images/row_2.jpg',
+                'images/row_3.jpg',
+                'images/row_4.jpg',
+                'images/row_5.jpg',
+                'images/row_6.jpg'
+
             ],
             numRows = 6,
-            numCols = 5,
+            numCols = 1,
             row, col;
 
         // Before drawing, clear existing canvas
@@ -138,7 +145,7 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 81);
             }
         }
 
@@ -177,7 +184,13 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/wave.png',
         'images/shark2.png',
-        'images/char-pengiun.png'
+        'images/char-pengiun.png',
+        'images/row_1.jpg',
+        'images/row_2.jpg',
+        'images/row_3.jpg',
+        'images/row_4.jpg',
+        'images/row_5.jpg',
+        'images/row_6.jpg'
     ]);
     Resources.onReady(init);
 
