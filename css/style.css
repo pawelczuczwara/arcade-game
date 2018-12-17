@@ -1,19 +1,55 @@
 :root {
-    --overlay:    #808080cc;
-    --modal:      #ffffffd9;
-    --bt_hover:   #f08080;
-    --bt_focus:   #0000ff;
-}
+    --back:       #1b3031;
+    --deep:       #255d6a;
+    --font:       #e5ccb6;
+    --overlay:    #255d6acc;
+    --modal:      #766c63d9;
+    --bt:         #739aa5;
+    --bt_hover:   #e5ccb6;
+    --bt_focus:   #1b3031;
+    /* blue 739aa5
+       brown 766c63
+       sand e5ccb6
+       deep 255d6a
+       black 1b3031 */
+    }
+
 body {
+    background: var(--back);
+
+    color: var(--font);
     text-align: center;
+    font-family: 'Roboto Slab', serif;
+}
+
+.title {
+    width: 70%;
+    background: var(--deep);
+    font-size: 3em;
+    margin: 0;
+}
+
+.info {
+    width: 70%;
+    background: var(--deep);
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    margin: auto 0 0 auto;
+
+    font-size: 1.5em;
 }
 
 button {
-    font-size: 1.5em;
-    background: grey;
+    background: var(--bt);
     border: none;
+    border-radius: 10px;
     padding: 10px;
     margin: 10px;
+
+    font-size: 1.5em;
+    font-family: 'Roboto Slab', serif;
     cursor: pointer;
 
 }
@@ -23,6 +59,7 @@ button:hover {
 }
 button:focus {
     border: solid 2px var(--bt_focus);
+    border-radius: 10px;
 }
 
 .overlay {
@@ -44,19 +81,23 @@ button:focus {
 
     /* styling - to style and position interior of the cards */
     background: var(--modal);
+    border-radius: 10px;
 
     display: grid;
-    grid-template-rows: 3fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
     justify-self: center;
     justify-items: center;
     align-items: center;
 
 }
 
-.scores {
-    font-size: 2em;
+.modal_level,
+.modal_time {
+    font-size: 3em;
 }
 
 .hidden {
     display: none;
 }
+
+

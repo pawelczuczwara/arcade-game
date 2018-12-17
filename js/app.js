@@ -1,4 +1,6 @@
 'use strict';
+// global nodes
+
 
 // Enemies to avoid
 class Enemy{
@@ -124,7 +126,7 @@ class Enemies{
 }
 
 const enemies = new Enemies();
-let allEnemies = enemies.reset(); //enemies.get();
+let allEnemies = enemies.reset();
 
 const player = new Player();
 // console.log(player);
@@ -151,10 +153,11 @@ class Modal{
 
         //level information reset
         level.reset();
-        document.querySelector('.level').textContent = 1;
+        document.querySelector('.info_level').textContent = 1;
 
         allEnemies = enemies.reset();
         player.reset();
+        timer.reset();
         this.close();
     }
 
@@ -163,18 +166,21 @@ class Modal{
 
         // level information update
         level.add();
-        document.querySelector('.level').textContent = level.counter_cur;
+        document.querySelector('.info_level').textContent = level.counter_cur;
 
         enemies.add();
         player.reset();
+        timer.start();
         this.close();
     }
 
     open() {
         // console.log('open');
+        timer.pause();
 
         this.is_open = true;
         this.overlay.querySelector('.modal_level').textContent = level.counter_cur;
+        this.overlay.querySelector('.modal_time').textContent = timer.get();
 
         setTimeout( () => {
             this.overlay.classList.remove('hidden');
@@ -220,9 +226,64 @@ class Counter{
         this.node.textContent = this.counter_cur;
     };
 };
-const level = new Counter({node: document.querySelector('.level')});
+const level = new Counter({node: document.querySelector('.info_level')});
+
+// timer
+class Timer{
+    constructor({node}) {
+        this.time_node = node;
+        this.time_sec = 0;
+        this.time_min = 0;
+        this.time_started = false;
+        this.time_interval = '';
+    }
+    _s_pref() {
+        return (this.time_sec < 10) ? "0" : "";
+    }
+
+    _m_pref() {
+        return (this.time_min < 10) ? "0" : "";
+    }
+
+    _HTML() {
+        this.time_node.innerHTML = this.get();
+    }
+
+    _tick() {
+        this.time_sec++;
+        if (this.time_sec == 60) {
+            this.time_min++;
+            this.time_sec = 0;
+        }
+    }
+
+    get() {
+        return this._m_pref() + this.time_min + ":" + this._s_pref() + this.time_sec;
+    }
+
+    start() {
+        this.time_started = true;
+        this.time_interval = setInterval(() => {
+            this._HTML();
+            this._tick();
+        }, 1000);
+    }
+
+    pause() {
+        clearInterval(this.time_interval);
+    }
+
+    reset() {
+        clearInterval(this.time_interval);
+        this.time_started = false;
+        this.time_min = 0;
+        this.time_sec = 0;
+        this._HTML();
+    }
 
 
+}
+const timer = new Timer({node: document.querySelector('.info_time')});
 
 // ----------------------- input -----------------------
 
@@ -236,6 +297,7 @@ document.addEventListener('keyup', function(e) {
         40: 'down'
     };
 
+    (timer.time_started) ? '' : timer.start();
     player.handleInput(allowedKeys[e.keyCode]);
     // console.log(allowedKeys[e.keyCode]);
 });

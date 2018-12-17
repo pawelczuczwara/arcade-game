@@ -2,13 +2,14 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>JavaScript game: Save the surfer</title>
+    <title>JavaScript game: Surfer rescue</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <header>
-        <h1 class='title'>Save the surfer</h1>
+        <p class='title'>surfer rescue</p>
         <div class='info'>
             <div>
                 <span>Level: </span><span class='info_level'>1</span>
@@ -17,7 +18,7 @@
                 <span>Score: </span><span class='info_score'>100</span>
             </div>
             <div>
-                <span>Time: </span><span class='info_time'>XX:XX</span>
+                <span class='info_time'>00:00</span>
             </div>
         </div>
     </header>
@@ -25,9 +26,13 @@
         <div class='overlay hidden'>
             <div class='modal'>
                 <div>
-                    <span class='modal_txt'>Great job, completing level: </span>
+                    <h1 class='modal_txt'>Great job, completing level: </h1>
                     <span class='modal_level'>X</span>
                 </div>
+                <div>
+                        <h1 class='modal_txt'>Your time: </h1>
+                        <span class='modal_time'>XX:XX</span>
+                    </div>
                 <div>
                     <button class='restart'>Restart</button>
                     <button class='next'>Next level</button>
