@@ -5,7 +5,8 @@ class Enemy{
     constructor({x = 0, y = 50, max_speed = 300} = {}) {
 
         // The image/sprite for our enemies,
-        this.sprite = 'images/enemy-bug.png';
+        // this.sprite = 'images/enemy-bug.png';
+        this.sprite = 'images/shark2.png';
         this.x = x;
         this.y = y;
         this.speed = this._speed(max_speed);
@@ -44,7 +45,7 @@ class Enemy{
 // requires an update(), render(), handleInput() methods.
 class Player{
     constructor() {
-        this.sprite = 'images/char-boy.png';
+        this.sprite = 'images/char-pengiun.png';
         this.maxX = 400;
         this.maxY = 400;
         this.initX = this.maxX / 2;
@@ -60,8 +61,8 @@ class Player{
         if (this.y <= 0 && modal.is_open === false) {
             // setTimeout(() => {
                 console.log ('win win');
-                window.openModal();
-                //modal.open();
+                //window.openModal();
+                modal.open();
                 // this.reset();
         // }, 0);
         }
@@ -90,6 +91,7 @@ class Player{
 class Enemies{
     constructor() {
         this.nr = 0;
+        this.all = [];
         this.set = [
             {x: 0,    y: 50,  speed: 350},
             {x: 0,    y: 140, speed: 250},
@@ -98,7 +100,6 @@ class Enemies{
             {x: -250, y: 155, speed: 200},
             {x: -200, y: 250, speed: 100},
         ];
-        this.all = [];
     }
 
     add(x = 1) {
@@ -106,22 +107,24 @@ class Enemies{
             this.all.push(new Enemy(this.set[this.nr]));
             this.nr += 1;
         }
+        return this.all;
         // console.log(this.all);
     }
 
-    get() {
-        return this.all;
-    }
+    // get() {
+    //     return this.all;
+    // }
 
     reset() {
         this.nr = 0;
-        this.add(3);
+        this.all = [];
+        this.add(3); // inital enemies
+        return this.all;
     }
 }
 
 const enemies = new Enemies();
-enemies.add(3); //max 6
-let allEnemies = enemies.get();
+let allEnemies = enemies.reset(); //enemies.get();
 
 const player = new Player();
 // console.log(player);
@@ -130,37 +133,55 @@ const player = new Player();
 class Modal{
     constructor(overlay) {
         this.overlay = overlay;
-        const restartBt = overlay.querySelector('.restart');
-        this.nextBt = overlay.querySelector('.next');
         this.is_open = false;
 
-        restartBt.addEventListener('click', e => {
+        this.restartBt = overlay.querySelector('.restart');
+        this.nextBt = overlay.querySelector('.next');
+
+        this.restartBt.addEventListener('click', e => {
             this._restart();
         });
-
         this.nextBt.addEventListener('click', e => {
             this._next();
         });
-
     }
+
     _restart() {
         console.log('restart');
-        this.close();
-        enemies.reset();
+
+        //level information reset
+        level.reset();
+        document.querySelector('.level').textContent = 1;
+
+        allEnemies = enemies.reset();
         player.reset();
+        this.close();
     }
+
     _next() {
         console.log('next');
-        this.close();
+
+        // level information update
+        level.add();
+        document.querySelector('.level').textContent = level.counter_cur;
+
         enemies.add();
         player.reset();
+        this.close();
     }
+
     open() {
-        console.log('open');
+        // console.log('open');
+
         this.is_open = true;
-        this.nextBt.focus();
-        this.overlay.classList.remove('hidden');
+        this.overlay.querySelector('.modal_level').textContent = level.counter_cur;
+
+        setTimeout( () => {
+            this.overlay.classList.remove('hidden');
+            this.nextBt.focus();
+        }, 500);
     }
+
     close() {
         console.log('close');
         this.is_open = false;
@@ -170,6 +191,40 @@ class Modal{
 
 const modal = new Modal(document.querySelector('.overlay'));
 window.openModal = modal.open.bind(modal);
+
+// ----------------------- scores -----------------------
+class Counter{
+    constructor({node, step = 1}) {
+        this.step = step;
+        this.node = node;
+        this.counter_cur = 1;
+    }
+
+    get() {
+        return this.counter_cur;
+    }
+
+    add() {
+        this.counter_cur += this.step;
+        this.set();
+        return this.counter_cur;
+    };
+
+    reset() {
+        this.counter_cur = 0;
+        this.set();
+        return this.counter_cur;
+    };
+
+    set() {
+        this.node.textContent = this.counter_cur;
+    };
+};
+const level = new Counter({node: document.querySelector('.level')});
+
+
+
+// ----------------------- input -----------------------
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -184,6 +239,7 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
     // console.log(allowedKeys[e.keyCode]);
 });
+
 
 window.addEventListener('swipeleft', function(e) {
     console.log('left');

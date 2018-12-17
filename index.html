@@ -8,12 +8,26 @@
 </head>
 <body>
     <header>
-        <h1>Save the surfer</h1>
+        <h1 class='title'>Save the surfer</h1>
+        <div class='info'>
+            <div>
+                <span>Level: </span><span class='info_level'>1</span>
+            </div>
+            <div>
+                <span>Score: </span><span class='info_score'>100</span>
+            </div>
+            <div>
+                <span>Time: </span><span class='info_time'>XX:XX</span>
+            </div>
+        </div>
     </header>
     <section>
         <div class='overlay hidden'>
             <div class='modal'>
-                <div class='scores'>Great job</div>
+                <div>
+                    <span class='modal_txt'>Great job, completing level: </span>
+                    <span class='modal_level'>X</span>
+                </div>
                 <div>
                     <button class='restart'>Restart</button>
                     <button class='next'>Next level</button>
