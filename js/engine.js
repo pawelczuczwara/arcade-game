@@ -25,11 +25,14 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    // canvas.width = window.width;
-    // canvas.height = window.height;
-    canvas.width = 505;
-    canvas.height = 606;
-    doc.body.appendChild(canvas);
+    // ctx.canvas.width  = doc.documentElement.clientWidth;
+    // ctx.canvas.height = doc.documentElement.clientWidth;
+    // canvas.width = 500;
+    // canvas.height = 606;
+
+    const canv = doc.querySelector('.canvas').appendChild(canvas);
+    ctx.canvas.width = canv.width * 1.65;
+    ctx.canvas.height = canv.width * 1.02;
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -81,7 +84,9 @@ var Engine = (function(global) {
      * on the entities themselves within your app.js file).
      */
     function update(dt) {
-        updateEntities(dt);
+        if (modal.is_open === false) {
+            updateEntities(dt);
+        }
         // checkCollisions();
     }
 
@@ -145,7 +150,7 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 81);
+                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 85);
             }
         }
 
@@ -180,11 +185,10 @@ var Engine = (function(global) {
      * all of these images are properly loaded our game will start.
      */
     Resources.load([
-        'images/water-block.png',
-        'images/grass-block.png',
-        'images/wave.png',
-        'images/shark2.png',
-        'images/char-pengiun.png',
+        'images/fish.svg',
+        'images/wave.svg',
+        'images/shark.svg',
+        'images/penguin.svg',
         'images/row_1.jpg',
         'images/row_2.jpg',
         'images/row_3.jpg',

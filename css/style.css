@@ -1,17 +1,29 @@
 :root {
+    /* colors */
     --back:       #1b3031;
     --deep:       #255d6a;
     --font:       #e5ccb6;
+    --font_dark:  #766c63;
     --overlay:    #255d6acc;
     --modal:      #766c63d9;
     --bt:         #739aa5;
     --bt_hover:   #e5ccb6;
     --bt_focus:   #1b3031;
+    --canvas:     #739aa5;
+
+    /* color scheme */
     /* blue 739aa5
        brown 766c63
        sand e5ccb6
        deep 255d6a
        black 1b3031 */
+
+    /* //sizes related to screen width */
+    --vw: 100vw;
+    --font_small: calc(var(--vw) * 0.03);
+    --font_big: calc(var(--vw) * 0.05);
+    --size_w: calc(var(--vw) * 1.0);
+    --size_h: calc(var(--vw) * .85);
     }
 
 body {
@@ -22,39 +34,42 @@ body {
     font-family: 'Roboto Slab', serif;
 }
 
-.title {
-    width: 70%;
-    background: var(--deep);
-    font-size: 2em;
-    margin: 0;
-
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    align-items: center;
-    /* grid-row: 20px; */
+header {
+    width: var(--vw);
+    display: flex;
+    flex-flow: row;
+    margin: auto;
 }
 
-.title_restart {
-    /* height: 1em; */
-    font-size: 0.8em;
+.title {
+    width: 50%;
+    background: var(--deep);
+    font-size: var(--font_big);
+    margin: auto 0 30px auto;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    justify-items: center;
 }
 
 .info {
-    width: 70%;
+    width: 80%;
     background: var(--deep);
 
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     justify-content: center;
-    margin: auto 0 30px auto;
+    margin: auto 0 15px auto;
 
-    font-size: 1.5em;
+    font-size: var(--font_small);
 }
 
 button {
+    color: var(--font);
     background: var(--bt);
     border: none;
-    border-radius: 10px;
+    /* border-radius: 10px; */
     padding: 10px;
     margin: 10px;
 
@@ -65,6 +80,7 @@ button {
 
 button:hover {
     background: var(--bt_hover);
+    color: var(--font_dark);
 }
 button:focus {
     outline: none;
@@ -86,8 +102,8 @@ button:focus {
 
 .modal {
     position: relative;
-    width: 60%;
-    height: 50%;
+    width: 90%;
+    height: 70%;
 
     /* styling - to style and position interior of the cards */
     background: var(--modal);
@@ -104,7 +120,7 @@ button:focus {
 .modal_level,
 .modal_time,
 .modal_scores {
-    font-size: 3em;
+    font-size: var(--font_big);
 }
 
 .modal_txt {
@@ -115,4 +131,32 @@ button:focus {
     display: none;
 }
 
+canvas {
+    width: var(--size_w);
+    height: var(--size_h);
+    margin: auto;
+    background: var(--canvas);
+}
 
+.footer_restart {
+    /* height: 1em; */
+    font-size: 1.5em;
+}
+
+
+/* ------------------------ media query ----------------------------- */
+
+/* On screens 0-300px */
+@media screen and (max-width: 300px) {
+    :root {
+        --vw: 300px;
+    }
+}
+
+
+/* On screens above 600px */
+@media screen and (min-width: 800px) {
+    :root {
+        --vw: 800px;
+    }
+}

@@ -1,6 +1,10 @@
 'use strict';
 // global nodes
-const titleRestart = document.querySelector('.title_restart');
+const fRestart = document.querySelector('footer .restart');
+const fLeft = document.querySelector('footer .left');
+const fUp = document.querySelector('footer .up');
+const fDown = document.querySelector('footer .down');
+const fRight = document.querySelector('footer .right');
 
 // ----------------------- enemies -----------------------
 class Enemy{
@@ -8,7 +12,7 @@ class Enemy{
 
         // The image/sprite for our enemies,
         // this.sprite = 'images/enemy-bug.png';
-        this.sprite = 'images/shark2.png';
+        this.sprite = 'images/shark.svg';
         this.x      = x;
         this.y      = y;
         this.speed  = this._speed(max_speed);
@@ -68,7 +72,7 @@ class Enemies{
     }
 
     reset() {
-        this.nr = 0;
+        this.nr  = 0;
         this.all = [];
         this.add(3); // inital 3 enemies
         return this.all;
@@ -80,9 +84,9 @@ class Enemies{
 // requires an update(), render(), handleInput() methods.
 class Player{
     constructor() {
-        this.sprite = 'images/char-pengiun.png';
+        this.sprite = 'images/penguin.svg';
         this.maxX   = 400;
-        this.maxY   = 300;
+        this.maxY   = 400;
         this.initX  = this.maxX / 2;
         this.initY  = this.maxY;
         this.stepX  = this.maxX / 10;
@@ -95,7 +99,7 @@ class Player{
         // What if win
         // console.log(this.y);
         if (this.y <= 0 && modal.is_open === false) {
-            console.log ('win win');
+            // console.log ('win win');
             main.openModal();
         }
     }
@@ -125,11 +129,12 @@ class GameObject{
     constructor({x = 0, y = 50} = {}) {
 
         // The image/sprite for objects - waves,
-        this.sprite = 'images/wave.png';
+        this.sprite = 'images/wave.svg';
         this.x      = x;
         this.y      = y;
         this.buf    = 20;
         // this.canvas = 400;
+        //Math.round(Math.random())
     }
 
     _set(max) {
@@ -138,6 +143,7 @@ class GameObject{
     }
 
     add() {
+        this.sprite = (Math.round(Math.random()) === 1) ? 'images/wave.svg' : 'images/fish.svg';
         this.x = this._set(450);
         this.y = this._set(300);
         // console.log(this.x, this.y);
@@ -155,7 +161,9 @@ class GameObject{
 
     // Draw the object on the screen, required method for game
     render() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+        let obj = ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+        // obj.width = 200px;
+        // obj.height = 200px;
     }
 
 }
@@ -212,6 +220,10 @@ class Modal{
         // console.log('close');
         this.is_open = false;
         this.overlay.classList.add('hidden');
+    }
+
+    isOpen() {
+        return this.is_open;
     }
 }
 
@@ -386,12 +398,24 @@ document.addEventListener('keyup', function(e) {
     // console.log(allowedKeys[e.keyCode]);
 });
 
+// window.addEventListener('swipeleft', function(e) {
+//     console.log('left');
+//     player.handleInput('left');
+// });
 
-window.addEventListener('swipeleft', function(e) {
-    console.log('left');
-    player.handleInput('left');
+fRestart.addEventListener('click', function() {
+    modal.restart();
 });
 
-titleRestart.addEventListener('click', function() {
-    modal.restart();
+fUp.addEventListener('click', function() {
+    player.handleInput('up');
+});
+fDown.addEventListener('click', function() {
+    player.handleInput('down');
+});
+fLeft.addEventListener('click', function() {
+    player.handleInput('left');
+});
+fRight.addEventListener('click', function() {
+    player.handleInput('right');
 });
