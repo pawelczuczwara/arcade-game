@@ -28,15 +28,15 @@
         <div class='overlay hidden'>
             <div class='modal'>
                 <div>
-                    <h1 class='modal_txt'>Great, level completed: </h1>
+                    <p class='modal_txt'>Great, level completed: </p>
                     <span class='modal_level'>X</span>
                 </div>
                 <div>
-                    <h1 class='modal_txt'>Your time: </h1>
+                    <p class='modal_txt'>Your time: </p>
                     <span class='modal_time'>XX:XX</span>
                 </div>
                 <div>
-                    <h1 class='modal_txt'>Your scores: </h1>
+                    <p class='modal_txt'>Your scores: </p>
                     <span class='modal_scores'>000</span>
                 </div>
                 <div>
@@ -57,6 +57,9 @@
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>
-    <!-- Canvas injected here -->
+
+    <audio data-key="col" src="./sound/collision.wav"></audio>
+    <audio data-key="ok" src="./sound/ok.wav"></audio>
+    <audio data-key="win" src="./sound/win.wav"></audio>
 </body>
 </html>

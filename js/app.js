@@ -1,17 +1,16 @@
 'use strict';
 // global nodes
 const fRestart = document.querySelector('footer .restart');
-const fLeft = document.querySelector('footer .left');
-const fUp = document.querySelector('footer .up');
-const fDown = document.querySelector('footer .down');
-const fRight = document.querySelector('footer .right');
+const fLeft    = document.querySelector('footer .left');
+const fUp      = document.querySelector('footer .up');
+const fDown    = document.querySelector('footer .down');
+const fRight   = document.querySelector('footer .right');
 
 // ----------------------- enemies -----------------------
 class Enemy{
     constructor({x = 0, y = 50, max_speed = 300} = {}) {
 
-        // The image/sprite for our enemies,
-        // this.sprite = 'images/enemy-bug.png';
+        // The image/sprite for oenemies,
         this.sprite = 'images/shark.svg';
         this.x      = x;
         this.y      = y;
@@ -62,6 +61,7 @@ class Enemies{
         ];
     }
 
+    // return new object from class Enemy
     add(x = 1) {
         for(var i=0; i<x; i++) {
             this.all.push(new Enemy(this.set[this.nr]));
@@ -142,7 +142,9 @@ class GameObject{
         return Math.floor(Math.random() * (max - 50)) + 50;
     }
 
+    // add new object
     add() {
+        // decide what image use
         this.sprite = (Math.round(Math.random()) === 1) ? 'images/wave.svg' : 'images/fish.svg';
         this.x = this._set(450);
         this.y = this._set(300);
@@ -312,22 +314,48 @@ class Timer{
     }
 }
 
-// ----------------------- objects definitions -----------------------
-const enemies = new Enemies();
-let allEnemies = enemies.reset();
+//  ----------------- Audio class -----------------
+class Audio{
+    constructor(sound_name, volume = 0.25, currentTime = 0) {
+        this.sound_name = sound_name;
+        this.volume = volume;
+        this.currentTime = currentTime; //rewind to start
+    }
 
-const player = new Player();
-// console.log(player);
+    _getAudioObject() {
+        return document.querySelector(`audio[data-key='${this.sound_name}']`);
+    }
 
+    play() {
+        const audio = this._getAudioObject();
+        if (!audio) return; //stop if no audio definition
+        audio.volume = this.volume;
+        audio.currentTime = this.currentTime; //rewind to start
+        audio.play();
+    }
+}
+
+// ----------------------- objects initialisation -----------------------
+
+const enemies    = new Enemies();
+const player     = new Player();
 const gameObject = new GameObject();
 
-const modal = new Modal(document.querySelector('.overlay'));
+let allEnemies   = enemies.reset();
+
+const modal      = new Modal(document.querySelector('.overlay'));
 window.openModal = modal.open.bind(modal);
 
-const level = new Counter({node: document.querySelector('.info_level')});
-const scores = new Counter({step: 100, node: document.querySelector('.info_scores'), start: 0,});
+// init counters and timers
+const level      = new Counter({node: document.querySelector('.info_level')});
+const scores     = new Counter({step: 100, node: document.querySelector('.info_scores'), start: 0,});
+const timer      = new Timer({node: document.querySelector('.info_time')});
 
-const timer = new Timer({node: document.querySelector('.info_time')});
+// init audio
+const audio_ok   = new Audio('ok');
+const audio_win  = new Audio('win');
+const audio_col  = new Audio('collision');
+
 
 // ----------------------- Main functionality -----------------------
 
@@ -335,6 +363,7 @@ const main = {
     infoLevel    : document.querySelector('.info_level'),
     infoScores   : document.querySelector('.info_scores'),
 
+    //restart game
     restart: function restart() {
         level .reset();
         scores.reset();
@@ -346,11 +375,13 @@ const main = {
         timer     .reset();
     },
 
+    //update information about game state
     _nodeUpdate: function _nodeUpdate() {
         this.infoLevel.textContent  = level.get();
         this.infoScores.textContent = scores.get();
     },
 
+    // next level add enemies and object
     next: function next() {
         level.add();
         this._nodeUpdate();
@@ -361,23 +392,29 @@ const main = {
         timer.     start();
     },
 
+    //start modal windows when passed one level
     openModal: function openModal() {
-        timer.pause();
+        timer    .pause();
+        audio_win.play();
 
-        scores.add();
-        this  ._nodeUpdate();
+        scores   .add();
+        this     ._nodeUpdate();
 
         // modal.open();
         window.openModal();
     },
 
+    //add scores
     scoresAdd: function scoresAdd(score) {
-        scores.add(score);
+        audio_ok.play();
+        scores  .add(score);
     },
 
-    collision: function colission() {
-        player.reset();
-        scores.add(-25);
+    //collioson occured with enemy
+    collision: function collission() {
+        audio_col.play();
+        player   .reset();
+        scores   .add(-25);
     }
 }
 
@@ -397,11 +434,6 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
     // console.log(allowedKeys[e.keyCode]);
 });
-
-// window.addEventListener('swipeleft', function(e) {
-//     console.log('left');
-//     player.handleInput('left');
-// });
 
 fRestart.addEventListener('click', function() {
     modal.restart();

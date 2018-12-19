@@ -22,8 +22,8 @@
     --vw: 100vw;
     --font_small: calc(var(--vw) * 0.03);
     --font_big: calc(var(--vw) * 0.05);
-    --size_w: calc(var(--vw) * 1.0);
-    --size_h: calc(var(--vw) * .85);
+    --size_w: var(--vw);
+    --size_h: var(--vw);
     }
 
 body {
@@ -32,6 +32,7 @@ body {
     color: var(--font);
     text-align: center;
     font-family: 'Roboto Slab', serif;
+    margin-left: 0;
 }
 
 header {
@@ -85,7 +86,7 @@ button:hover {
 button:focus {
     outline: none;
     border: solid 2px var(--bt_focus);
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .overlay {
@@ -125,6 +126,7 @@ button:focus {
 
 .modal_txt {
     margin: 0;
+    font-size: var(--font_big);
 }
 
 .hidden {
@@ -137,6 +139,8 @@ canvas {
     margin: auto;
     background: var(--canvas);
 }
+
+
 
 .footer_restart {
     /* height: 1em; */
@@ -153,10 +157,14 @@ canvas {
     }
 }
 
+/* On screens 0-799px */
+/* @media screen and (max-width: 799px) {
+
+} */
 
 /* On screens above 600px */
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 700px) {
     :root {
-        --vw: 800px;
+        --vw: 700px;
     }
 }

@@ -1,20 +1,27 @@
 # Classic Arcade Game Clone Project
 
+
 ## Table of Contents
 
-- [Instructions](#instructions)
-- [Contributing](#contributing)
+- [Instructions](#Instructions)
+- [Technology](#Technology)
 
 ## Instructions
 
-Use this [rubric](https://review.udacity.com/#!/rubrics/15/view) for self-checking your submission.
+Classic arcade game.
+1.Save surfing pengiun by moving to the top of the board.
+2. Avoid moving sharks, or loose points on impact.
+3. Collect waves and fish and win additional points.
 
-Make sure the functions you write are **object-oriented** - either class functions (like `Player` and `Enemy`) or class prototype functions such as `Enemy.prototype.checkCollisions`. Also make sure that the keyword `this` is used appropriately within your class and class prototype functions to refer to the object the function is called upon.
+After completing one level, you will be rewarded by addtional 100 points
+and you can move to next level. Each level contains more sharks.
 
-Your **README.md** file should be updated with instructions on both how to 1. Run and 2. Play your arcade game.
+## Technology
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+Vanilla JavaScript ES6 - object oriented programming pattern.
+HTML, HTML5, CSS       - responsive design with css variables.
 
-## Contributing
+app.js       - game functionality.
+engine.js    - HTML5 canvas drawing.
+resources.js - loading of the image resources.
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.

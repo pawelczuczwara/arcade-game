@@ -48,19 +48,18 @@
             var img = new Image();
             img.onload = function() {
                 /* Once our image has properly loaded, add it to our cache
-                 * so that we can simply return this image if the developer
-                 * attempts to load this file in the future.
-                 */
+                * so that we can simply return this image if the developer
+                * attempts to load this file in the future.
+                */
                 resourceCache[url] = img;
 
                 /* Once the image is actually loaded and properly cached,
-                 * call all of the onReady() callbacks we have defined.
-                 */
+                * call all of the onReady() callbacks we have defined.
+                */
                 if(isReady()) {
                     readyCallbacks.forEach(function(func) { func(); });
                 }
             };
-
             /* Set the initial cache value to false, this will change when
              * the image's onload event handler is called. Finally, point
              * the image's src attribute to the passed in URL.
