@@ -7,7 +7,8 @@ const fDown    = document.querySelector('footer .down');
 const fRight   = document.querySelector('footer .right');
 
 // ----------------------- enemies -----------------------
-class Enemy{
+class Enemy
+{
     constructor({x = 0, y = 50, max_speed = 300} = {}) {
 
         // The image/sprite for oenemies,
@@ -46,7 +47,8 @@ class Enemy{
 
 }
 
-class Enemies{
+class Enemies
+{
     constructor() {
         this.nr  = 0;
         this.all = [];
@@ -82,7 +84,8 @@ class Enemies{
 
 // player class
 // requires an update(), render(), handleInput() methods.
-class Player{
+class Player
+{
     constructor() {
         this.sprite = 'images/penguin.svg';
         this.maxX   = 400;
@@ -125,7 +128,8 @@ class Player{
 
 
 // ----------------------- collect -----------------------
-class GameObject{
+class GameObject
+{
     constructor({x = 0, y = 50} = {}) {
 
         // The image/sprite for objects - waves,
@@ -171,7 +175,8 @@ class GameObject{
 }
 
 // Modal to show scores between levels
-class Modal{
+class Modal
+{
     constructor(overlay) {
         this.overlay      = overlay;
         this.is_open      = false;
@@ -231,7 +236,8 @@ class Modal{
 
 
 // ----------------------- scores -----------------------
-class Counter{
+class Counter
+{
     constructor({node, step = 1, start = 1}) {
         this.node        = node;
         this.step        = step;
@@ -261,7 +267,8 @@ class Counter{
 };
 
 // ----------------------- timer -----------------------
-class Timer{
+class Timer
+{
     constructor({node}) {
         this.time_node      = node;
         this.time_sec       = 0;
@@ -315,10 +322,10 @@ class Timer{
 }
 
 //  ----------------- Audio class -----------------
-class Audio{
-    constructor(sound_name, volume = 0.25, currentTime = 0) {
+class Audio
+{
+    constructor(sound_name, currentTime = 0) {
         this.sound_name = sound_name;
-        this.volume = volume;
         this.currentTime = currentTime; //rewind to start
     }
 
@@ -326,14 +333,43 @@ class Audio{
         return document.querySelector(`audio[data-key='${this.sound_name}']`);
     }
 
-    play() {
+    play(volume = 0.25) {
         const audio = this._getAudioObject();
         if (!audio) return; //stop if no audio definition
-        audio.volume = this.volume;
+        audio.volume = volume;
         audio.currentTime = this.currentTime; //rewind to start
+        // alert(context.state);
         audio.play();
+        // alert(context.state);
     }
 }
+
+// unlocking audio on IOS devices
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const context = new AudioContext();
+
+// function webAudioTouchUnlock (context)
+// {
+//     if (context.state === 'suspended' && 'ontouchstart' in window)
+//     {
+//         var unlock = function()
+//         {
+//             // alert(context.state);
+//             context.resume().then(function()
+//             {
+//                 // alert(context.state);
+//                 document.body.removeEventListener('touchstart', unlock);
+//                 document.body.removeEventListener('touchend', unlock);
+//                 document.body.removeEventListener('click', unlock, false);
+//             });
+//         };
+//         document.body.addEventListener('touchstart', unlock, false);
+//         document.body.addEventListener('touchend', unlock, false);
+//         document.body.addEventListener('click', unlock, false);
+//         // unlock();
+//     }
+// }
+// webAudioTouchUnlock(context);
 
 // ----------------------- objects initialisation -----------------------
 
@@ -354,12 +390,13 @@ const timer      = new Timer({node: document.querySelector('.info_time')});
 // init audio
 const audio_ok   = new Audio('ok');
 const audio_win  = new Audio('win');
-const audio_col  = new Audio('collision');
+const audio_col  = new Audio('col');
 
 
 // ----------------------- Main functionality -----------------------
 
-const main = {
+const main =
+{
     infoLevel    : document.querySelector('.info_level'),
     infoScores   : document.querySelector('.info_scores'),
 
@@ -418,11 +455,15 @@ const main = {
     }
 }
 
+
+
+
 // ----------------------- input -----------------------
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method.
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keyup', function(e)
+{
     var allowedKeys = {
         37: 'left',
         38: 'up',
@@ -435,19 +476,34 @@ document.addEventListener('keyup', function(e) {
     // console.log(allowedKeys[e.keyCode]);
 });
 
-fRestart.addEventListener('click', function() {
+fRestart.addEventListener('click', function()
+{
     modal.restart();
 });
 
-fUp.addEventListener('click', function() {
+let audio_on = true;
+
+fUp.addEventListener('click', function()
+{
+    if (audio_on) {
+        // console.log('audio');
+        audio_ok.play(0);
+        audio_col.play(0);
+        audio_win.play(0);
+        audio_on = false;
+    }
     player.handleInput('up');
 });
-fDown.addEventListener('click', function() {
+fDown.addEventListener('click', function()
+{
     player.handleInput('down');
 });
-fLeft.addEventListener('click', function() {
+fLeft.addEventListener('click', function()
+{
     player.handleInput('left');
 });
-fRight.addEventListener('click', function() {
+fRight.addEventListener('click', function()
+{
     player.handleInput('right');
 });
+
