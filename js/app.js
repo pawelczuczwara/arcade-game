@@ -321,55 +321,62 @@ class Timer
     }
 }
 
-//  ----------------- Audio class -----------------
-class Audio
+// //  ----------------- Audio unlocking on IOS  -----------------
+
+
+
+function webAudioUnlock (context)
 {
-    constructor(sound_name, currentTime = 0) {
-        this.sound_name = sound_name;
-        this.currentTime = currentTime; //rewind to start
-    }
-
-    _getAudioObject() {
-        return document.querySelector(`audio[data-key='${this.sound_name}']`);
-    }
-
-    play(volume = 0.25) {
-        const audio = this._getAudioObject();
-        if (!audio) return; //stop if no audio definition
-        audio.volume = volume;
-        audio.currentTime = this.currentTime; //rewind to start
-        // alert(context.state);
-        audio.play();
-        // alert(context.state);
+    if (context.state === 'suspended') // && 'ontouchstart' in window)
+    {
+        var unlock = function()
+        {
+            context.resume().then(function()
+            {
+                document.body.removeEventListener('touchstart', unlock);
+                document.body.removeEventListener('touchend', unlock);
+                document.body.removeEventListener('click', unlock, false);
+            });
+        };
+        document.body.addEventListener('touchstart', unlock, false);
+        document.body.addEventListener('touchend', unlock, false);
+        document.body.addEventListener('click', unlock, false);
     }
 }
 
-// unlocking audio on IOS devices
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-const context = new AudioContext();
+class Audio
+{
+    constructor(context, sound_name, path = './sound/') {
+        this.sound_name = path + sound_name;
+        this.buffer;
+        this.source;
+        this.context = context;
+        this._define_buffer(context);
+    }
 
-// function webAudioTouchUnlock (context)
-// {
-//     if (context.state === 'suspended' && 'ontouchstart' in window)
-//     {
-//         var unlock = function()
-//         {
-//             // alert(context.state);
-//             context.resume().then(function()
-//             {
-//                 // alert(context.state);
-//                 document.body.removeEventListener('touchstart', unlock);
-//                 document.body.removeEventListener('touchend', unlock);
-//                 document.body.removeEventListener('click', unlock, false);
-//             });
-//         };
-//         document.body.addEventListener('touchstart', unlock, false);
-//         document.body.addEventListener('touchend', unlock, false);
-//         document.body.addEventListener('click', unlock, false);
-//         // unlock();
-//     }
-// }
-// webAudioTouchUnlock(context);
+    _define_buffer(context)
+    {
+        window.fetch(this.sound_name)
+            .then(response => response.arrayBuffer())
+            .then(arrayBuffer => context.decodeAudioData(arrayBuffer, audioBuffer =>
+                {
+                    this.buffer  = audioBuffer;
+                },
+                error => {
+                    console.error(error);
+                }
+                ));
+    }
+
+    play()
+    {
+        this.source  = this.context.createBufferSource();
+        this.source.buffer = this.buffer;
+        this.source.connect(this.context.destination);
+        this.source.start();
+    }
+}
+
 
 // ----------------------- objects initialisation -----------------------
 
@@ -387,10 +394,14 @@ const level      = new Counter({node: document.querySelector('.info_level')});
 const scores     = new Counter({step: 100, node: document.querySelector('.info_scores'), start: 0,});
 const timer      = new Timer({node: document.querySelector('.info_time')});
 
-// init audio
-const audio_ok   = new Audio('ok');
-const audio_win  = new Audio('win');
-const audio_col  = new Audio('col');
+// // init audio
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const context = new AudioContext();
+webAudioUnlock (context);
+
+const audio_ok   = new Audio(context, 'ok.wav');
+const audio_win  = new Audio(context, 'win.wav');
+const audio_col  = new Audio(context, 'collision.wav');
 
 
 // ----------------------- Main functionality -----------------------
@@ -456,8 +467,6 @@ const main =
 }
 
 
-
-
 // ----------------------- input -----------------------
 
 // This listens for key presses and sends the keys to your
@@ -473,7 +482,6 @@ document.addEventListener('keyup', function(e)
 
     (timer.time_started) ? '' : timer.start();
     player.handleInput(allowedKeys[e.keyCode]);
-    // console.log(allowedKeys[e.keyCode]);
 });
 
 fRestart.addEventListener('click', function()
@@ -481,17 +489,9 @@ fRestart.addEventListener('click', function()
     modal.restart();
 });
 
-let audio_on = true;
-
 fUp.addEventListener('click', function()
 {
-    if (audio_on) {
-        // console.log('audio');
-        audio_ok.play(0);
-        audio_col.play(0);
-        audio_win.play(0);
-        audio_on = false;
-    }
+    (timer.time_started) ? '' : timer.start();
     player.handleInput('up');
 });
 fDown.addEventListener('click', function()
@@ -506,4 +506,3 @@ fRight.addEventListener('click', function()
 {
     player.handleInput('right');
 });
-
